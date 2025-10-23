@@ -107,6 +107,90 @@ body {
   transform: translateY(-10px);
 }
 
+/* Services */
+
+.stroke-text {
+  -webkit-text-stroke: 1px var(--white-color);
+  color: transparent;
+  transition: var(--transition-regular);
+}
+
+.service-card:hover .stroke-text {
+  -webkit-text-stroke: 1px var(--primary-color);
+}
+
+/* custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary-color);
+}
+
+/* Work */
+
+@keyframes Anim-bottom {
+  0% {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+.work-content h2 {
+  opacity: 0;
+  animation: Anim-bottom var(--transition-regular) 1.4s forwards linear;
+}
+.work-content h3 {
+  opacity: 0;
+  animation: Anim-bottom var(--transition-regular) 1.2s forwards linear;
+}
+.work-content p {
+  opacity: 0;
+  animation: Anim-bottom var(--transition-regular) 1s forwards linear;
+}
+
+.work-icons {
+  opacity: 0;
+  animation: Anim-bottom var(--transition-regular) 0.8s forwards linear;
+}
+.work-share {
+  opacity: 0;
+  animation: Anim-bottom var(--transition-regular) 0.6s forwards linear;
+}
+.work-image {
+  opacity: 0;
+  animation: Anim-bottom var(--transition-regular) 0.3s forwards linear;
+}
+
+/* Contact */
+
+.contact-col {
+  cursor: pointer;
+}
+
+.contact-col span {
+  transition: var(--transition-regular);
+}
+
+.contact-col:hover span {
+  border-color: var(--white-color);
+  color: var(--white-color);
+}
+
 @media (max-width: 991px) {
   body {
     overflow-x: hidden !important;

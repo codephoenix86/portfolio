@@ -9,15 +9,15 @@ export default function Nav() {
   const pathname = usePathname();
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Services", href: "/Services" },
-    { name: "Resume", href: "/Resume" },
+    { name: "Research", href: "/Services" },
+    { name: "Publications", href: "/Resume" },
     { name: "Work", href: "/Work" },
     { name: "Contact", href: "/Contact" },
   ];
   return (
     <nav className="w-full z-[99999] transition-all duration-300">
-      <div className="flex justify-between items-center px-[8%] lg:px-[16%] py-6">
-        <Link
+      <div className="flex justify-end items-center px-[8%] lg:px-[16%] py-6">
+        {/* <Link
           href="/"
           className="text-5xl font-bold font-unbounded text-white logo"
         >
@@ -25,7 +25,7 @@ export default function Nav() {
           <span className="text-[var(--primary-color)] font-unbounded">
             Hub.
           </span>
-        </Link>
+        </Link> */}
         <div className="flex items-center gap-3">
           <div className="hidden lg:flex nav-menu items-center space-x-5">
             {navLinks.map((link) => (
@@ -44,9 +44,9 @@ export default function Nav() {
           </div>
           <Link
             href="/Contact"
-            className="bg-[var(--primary-color)] px-5 py-2 text-xl text-white font-semibold cursor-pointer rounded-full transition-all duration-300 hover:bg-transparent shadow-md hover:shadow-[0px_2px_5px_var(--primary-color)]"
+            className="bg-[var(--primary-color)] px-5 py-2 text-lg text-white font-semibold cursor-pointer rounded-lg transition-all duration-300 hover:bg-transparent shadow-md hover:shadow-[0px_2px_5px_var(--primary-color)]"
           >
-            Hire Us
+            Admin
           </Link>
         </div>
         {/* {Mobile menu Button} */}

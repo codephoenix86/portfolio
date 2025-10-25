@@ -1,17 +1,16 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import Hero from "@/public/Hero.png";
+import Hero from "@/public/Hero.jpeg";
 import { CountUp } from "countup.js";
 import { useEffect, useRef } from "react";
 
 export default function Header() {
   // statsData
   const statsData = [
-    { value: 12, label: "Years of\nExperience" },
-    { value: 22, label: "Projects\nCompleted" },
-    { value: 7, label: "Technogies\nMastered" },
-    { value: 450, label: "Code\nCommits" },
+    { value: 606, label: "Citations" },
+    { value: 15, label: "H-Index" },
+    { value: 18, label: "i10-Index" },
   ];
 
   const countRefs = useRef([]);
@@ -30,24 +29,27 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="h-[100vh] text-white py-12 relative">
+    <header className="text-white py-12 relative">
       {/* BG elements */}
       <div className="absolute top-0 left-0 w-[300px] h-[300px] rounded-full bg-gradient-to-r from-[var(--primary-light-1)] to-[var(--primary-light-2)] blur-[100px] -z-10"></div>
-      <div className="absolute top-0 right-0 w-[700px] h-[700px] rounded-full bg-gradient-to-r from-[var(--primary-light-1)] to-[var(--primary-light-2)] blur-[100px] -z-10"></div>
-      <div className="absolute bottom-0 left-[20%] w-[500px] h-[700px] rounded-full bg-gradient-to-r from-[var(--primary-light-1)] to-[var(--primary-light-2)] blur-[100px] -z-10"></div>
-      <div className="flex pt-10 flex-col lg:flex-row items-center justify-between px-[8%] lg:px-[16%]">
+      <div className="absolute top-0 right-0 w-[700px] h-full rounded-full bg-gradient-to-r from-[var(--primary-light-1)] to-[var(--primary-light-2)] blur-[100px] -z-10"></div>
+      <div className="absolute bottom-0 left-[20%] w-[500px] h-full rounded-full bg-gradient-to-r from-[var(--primary-light-1)] to-[var(--primary-light-2)] blur-[100px] -z-10"></div>
+      <div className="flex flex-col lg:flex-row justify-between px-[8%] lg:px-[16%]">
         {/* Left Content */}
         <div className="lg:w-1/2 text-start md:text-left">
-          <p className="text-lg mb-2 text-gray-400">Web Developer</p>
-          <h1 className="text-7xl text-start lg:text-7xl font-unbounded font-normal mb-2">
-            Hello I'm{" "}
+          <p className="text-lg mb-2 text-gray-400">
+            Assistant Professor, IIIT Sonepat
+          </p>
+          <h1 className="text-5xl text-start lg:text-5xl font-unbounded font-normal mb-2">
+            {/* Hello I'm{" "} */}
             <span className="text-[color:var(--primary-color)]">
-              Tyler Knox
+              Dr. Jitendra Kumar Samriya
             </span>
           </h1>
           <p className="text-gray-400 text-md lg:text-md font-normal font-sora my-8">
-            I excel at crafting elegant digital experiences and I am proficient
-            in various programming languages and technologies
+            I am passionate about advancing research and innovation in computer
+            science, with expertise in modern technologies and data-driven
+            solutions.
           </p>
           {/* Buttons */}
           <div className="flex flex-wrap gap-8 items-center">
@@ -79,16 +81,16 @@ export default function Header() {
         </div>
       </div>
       {/* Stats */}
-      <div className="stats px-[8%] lg:px-[16%] mt-30 hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+      <div className="stats px-[8%] lg:px-[16%] mt-24 hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {statsData.map((stat, index) => (
           <div key={index} className="flex gap-2 items-center">
             <h1
               ref={(el) => (countRefs.current[index] = el)}
-              className="text-7xl font-unbounded font-bold"
+              className="text-5xl font-unbounded font-bold"
             >
               0
             </h1>
-            <p className="text-xl ps-4 text-gray-400 font-semibold whitespace-pre-line">
+            <p className="text-lg ps-4 text-gray-400 font-semibold whitespace-pre-line">
               {stat.label}
             </p>
           </div>

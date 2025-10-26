@@ -3,10 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import Hero from "@/public/Hero.jpeg";
 import { CountUp } from "countup.js";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Header() {
   // statsData
+  const [loginPopup, setLoginPopup] = useState(false);
   const statsData = [
     { value: 606, label: "Citations" },
     { value: 15, label: "H-Index" },
@@ -31,6 +32,7 @@ export default function Header() {
   return (
     <header className="text-white py-12 relative">
       {/* BG elements */}
+      {loginPopup && <div className="absolute inset-0 bg-black/50"></div>}
       <div className="absolute top-0 left-0 w-[300px] h-[300px] rounded-full bg-gradient-to-r from-[var(--primary-light-1)] to-[var(--primary-light-2)] blur-[100px] -z-10"></div>
       <div className="absolute top-0 right-0 w-[700px] h-full rounded-full bg-gradient-to-r from-[var(--primary-light-1)] to-[var(--primary-light-2)] blur-[100px] -z-10"></div>
       <div className="absolute bottom-0 left-[20%] w-[500px] h-full rounded-full bg-gradient-to-r from-[var(--primary-light-1)] to-[var(--primary-light-2)] blur-[100px] -z-10"></div>
@@ -96,6 +98,41 @@ export default function Header() {
           </div>
         ))}
       </div>
+      {loginPopup && (
+        <Login class="w-lg fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+      )}
     </header>
+  );
+}
+
+function Login(props) {
+  return (
+    <div className={`bg-black p-8 rounded-xl shadow-lg ${props.class}`}>
+      <h2 className="text-2xl text-center font-unbounded font-normal text-[color:var(--primary-color)] mb-4">
+        Admin Login
+      </h2>
+      <form className={`space-y-6`}>
+        <div className="">
+          <input
+            type="text"
+            placeholder="enter your email"
+            className="w-full bg-[#0e0f12] border border-gray-700 rounded-lg px-4 py-4 text-sm focus:outline-none focus:border-[var(--primary-color)] transition-all duration-500"
+          />
+        </div>
+        <div className="">
+          <input
+            type="password"
+            placeholder="enter your password"
+            className="w-full bg-[#0e0f12] border border-gray-700 rounded-lg px-4 py-4 text-sm focus:outline-none focus:border-[var(--primary-color)] transition-all duration-500"
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-[var(--primary-color)] hover:bg-white text-white hover:text-black px-6 py-3 rounded-lg font-semibold transition-all duration-500 cursor-pointer"
+        >
+          Log In
+        </button>
+      </form>
+    </div>
   );
 }

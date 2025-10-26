@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Sora, Unbounded } from "next/font/google";
 import "./globals.css";
 import Nav from "./Nav";
+// import { createContext } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -10,8 +10,8 @@ export default function Nav() {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Research", href: "/Services" },
-    { name: "Publications", href: "/Resume" },
-    { name: "Work", href: "/Work" },
+    { name: "Work", href: "/Resume" },
+    { name: "Students", href: "/Work" },
     { name: "Contact", href: "/Contact" },
   ];
   return (

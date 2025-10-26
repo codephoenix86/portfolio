@@ -6,7 +6,7 @@ import { SiCss3, SiHtml5, SiNextdotjs, SiTailwindcss } from "react-icons/si";
 
 export default function Resume() {
   const [activeTab, setActiveTab] = useState("Publications");
-  const tabs = ["Publications", "Education", "Skills", "About me"];
+  const tabs = ["Publications", "Conferences", "Books", "Timeline"];
   // Experience
   const publications = [
     {
@@ -39,22 +39,36 @@ export default function Resume() {
       tags: [],
     },
   ];
-  // Education
-  const educations = [
+  // Conferences
+  const conferences = [
     {
-      year: "2021 - 2023",
-      degree: "M.Sc. Computer Science",
-      institute: "XYZ university",
+      date: 2023,
+      title:
+        "Towards 6G-Enabled Edge-Cloud Continuum Computing - Initial Assessment",
+      vanue: "Advanced Communication and Intelligent Systems (ICACIS)",
+      citations: "online",
+      tags: [
+        "Fog Computing",
+        "IoT",
+        "Workload Prediction",
+        "Resource Allocation",
+      ],
     },
     {
-      year: "2018 - 2021",
-      degree: "B.Sc. Computer Science",
-      institute: "ABC university",
+      date: 2024,
+      title:
+        "Adversarial ML-Based Secured Cloud Architecture for Consumer Internet of Things of Smart Healthcare",
+      vanue: "IEEE Transactions on Consumer Electronics",
+      citations: 20,
+      tags: ["Adversial ML", "Cloud Security", "IoT", "Healthcare"],
     },
     {
-      year: "2016 - 2018",
-      degree: "High School",
-      institute: "DEF university",
+      date: 2024,
+      title:
+        "Blockchain and Reinforcement Neural Network for Trusted Cloud-Enabled IoT Network",
+      vanue: "IEEE Transactions on Consumer Electronics",
+      citations: 20,
+      tags: [],
     },
   ];
   // Skills
@@ -73,13 +87,6 @@ export default function Resume() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
         {/* Left SideBar */}
         <div>
-          <h2 className="text-4xl font-unbounded font-bold mb-4">
-            Why hire me?
-          </h2>
-          <p className="text-gray-400 mt-6 mb-10">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur
-            fugit pariatur facere voluptatum doloremque consequatur.
-          </p>
           <div className="flex flex-col gap-5">
             {tabs.map((tab) => (
               <button
@@ -98,9 +105,24 @@ export default function Resume() {
         </div>
         {/* Right Content */}
         <div className="md:col-span-2">
-          <h2 className="text-4xl font-unbounded font-bold mb-4">
-            {activeTab}
-          </h2>
+          <div className="flex gap-2 mb-2">
+            <input
+              type="text"
+              placeholder="Search publications"
+              className="bg-[#0e0f12] w-full border-gray-700 rounded-lg px-4 py-4 text-sm focus:outline-none focus:border-[var(--primary-color)] transition-all duration-500"
+            />
+            <select className="bg-[#0e0f12] border border-gray-700 rounded-lg px-4 py-4 text-sm focus:outline-none focus:border-[var(--primary-color)] transition-all duration-500 appearance-none">
+              <option>Years</option>
+              <option>2024</option>
+              <option>2025</option>
+              <option>2026</option>
+            </select>
+            <select className="bg-[#0e0f12] border border-gray-700 rounded-lg px-4 py-4 text-sm focus:outline-none focus:border-[var(--primary-color)] transition-all duration-500 appearance-none">
+              <option>Relevance</option>
+              <option>Citations</option>
+              <option>H-index</option>
+            </select>
+          </div>
           <p className="text-gray-400 mb-10">
             Peer-reviewed journal papers and technical contributions
           </p>
@@ -119,7 +141,7 @@ export default function Resume() {
                     <h4 className="text-lg font-normal font-unbounded mb-1">
                       {pub.title}
                     </h4>
-                    <p className="text-gray-400 flex items-center gap-2 text-sm mt-2">
+                    <div className="text-gray-400 flex items-center gap-2 text-sm mt-2">
                       <div className="flex items-center">
                         <span className="text-[color:var(--primary-color)] text-2xl pe-2">
                           •
@@ -132,7 +154,7 @@ export default function Resume() {
                         </span>{" "}
                         {pub.citations} Citations
                       </div>
-                    </p>
+                    </div>
                     <div className="flex flex-wrap items-center gap-4 mt-2">
                       {pub.tags.map((tag, index) => (
                         <span
@@ -149,86 +171,135 @@ export default function Resume() {
             </div>
           )}
           {/* Education */}
-          {activeTab === "Education" && (
+          {activeTab === "Conferences" && (
             <div className="h-[500px] overflow-y-scroll pr-2 custom-scrollbar">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {educations.map((edu, index) => (
+              <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+                {conferences.map((conf, index) => (
                   <div
                     key={index}
-                    className="bg-gray-500/5 hover:bg-gray-500/10 border border-gray-800 rounded-lg px-5 py-10 hover:border-[var(--primary-color)] transition-all duration-500 cursor-pointer"
+                    className="bg-gray-500/5 hover:bg-gray-500/10 border border-gray-800 rounded-lg px-5 py-4 hover:border-[var(--primary-color)] transition-all duration-500 cursor-pointer"
                   >
                     <h3 className="text-[color:var(--primary-color)] font-semibold my-2">
-                      {edu.year}
+                      {conf.date}
                     </h3>
-                    <h4 className="text-3xl font-normal font-unbounded mb-1">
-                      {edu.degree}
+                    <h4 className="text-lg font-normal font-unbounded mb-1">
+                      {conf.title}
                     </h4>
-                    <p className="text-gray-400 flex items-center text-sm mt-2">
-                      <span className="text-[color:var(--primary-color)] text-2xl pe-2">
-                        •
-                      </span>{" "}
-                      {edu.institute}
-                    </p>
+                    <div className="text-gray-400 flex items-center gap-2 text-sm mt-2">
+                      <div className="flex items-center">
+                        <span className="text-[color:var(--primary-color)] text-2xl pe-2">
+                          •
+                        </span>{" "}
+                        {conf.vanue}
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-[color:var(--primary-color)] text-2xl pe-2">
+                          •
+                        </span>{" "}
+                        {conf.citations}
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-4 mt-2">
+                      {conf.tags.map((tag, index) => (
+                        <span
+                          key={index}
+                          className="bg-gray-500/10 text-gray-500 rounded-full py-1 px-1.75 text-[12px]"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
           )}
           {/* Skills */}
-          {activeTab === "Skills" && (
-            <ul className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-gray-200 mt-4">
-              {skills.map((skill, index) => (
-                <li
-                  key={index}
-                  className="relative cursor-pointer bg-gray-500/5 rounded py-11 flex flex-col items-center group"
-                >
-                  <i className="text-6xl group-hover:text-[color:var(--primary-color)] transition-all duration-500">
-                    {skill.icon}
-                  </i>
-                  {/* Tooltip */}
-                  <span className="absolute bottom-[5px] scale-0 rounded bg-gray-800 px-2 py-1 font-semibold text-1xl text-white transition-all duration-300 group-hover:scale-100 group-hover:text-[color:var(--primary-color)]">
-                    {skill.name}
-                  </span>
-                </li>
-              ))}
-            </ul>
+          {activeTab === "Books" && (
+            <div className="h-[500px] overflow-y-scroll pr-2 custom-scrollbar">
+              <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+                {conferences.map((conf, index) => (
+                  <div
+                    key={index}
+                    className="bg-gray-500/5 hover:bg-gray-500/10 border border-gray-800 rounded-lg px-5 py-4 hover:border-[var(--primary-color)] transition-all duration-500 cursor-pointer"
+                  >
+                    <h3 className="text-[color:var(--primary-color)] font-semibold my-2">
+                      {conf.date}
+                    </h3>
+                    <h4 className="text-lg font-normal font-unbounded mb-1">
+                      {conf.title}
+                    </h4>
+                    <div className="text-gray-400 flex items-center gap-2 text-sm mt-2">
+                      <div className="flex items-center">
+                        <span className="text-[color:var(--primary-color)] text-2xl pe-2">
+                          •
+                        </span>{" "}
+                        {conf.vanue}
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-[color:var(--primary-color)] text-2xl pe-2">
+                          •
+                        </span>{" "}
+                        {conf.citations}
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-4 mt-2">
+                      {conf.tags.map((tag, index) => (
+                        <span
+                          key={index}
+                          className="bg-gray-500/10 text-gray-500 rounded-full py-1 px-1.75 text-[12px]"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
           {/* About */}
-          {activeTab === "About me" && (
-            <div className="text-gray-400 space-y-4">
-              <p>
-                Hi! I'm{" "}
-                <span className="text-[color:var(--primary-color)] font-semibold">
-                  Tyler Knox
-                </span>
-                a passionate full-stack developer who enjoys crafting modern web
-                applications and sleek, user-friendly interfaces
-              </p>
-              <ul className="space-y-2">
-                <li>
-                  <strong>Experience</strong> 8+ year in Web Development
-                </li>
-                <li>
-                  <strong>Nationality</strong> American
-                </li>
-                <li>
-                  <strong>Freelance</strong> Available for projects
-                </li>
-                <li>
-                  <strong>Phone:</strong> (+1) 123 4567 890
-                </li>
-                <li>
-                  <strong>Email:</strong> tyler.Example@gmail.com
-                </li>
-                <li>
-                  <strong>Languages:</strong> English, Spanish
-                </li>
-              </ul>
-              <p>
-                I specialize in React, Next.js, Node.js, and Tailwind CSS. I
-                love turning ideas into functional elegant web solutions that
-                users enjoy
-              </p>
+          {activeTab === "Timeline" && (
+            <div className="h-[500px] overflow-y-scroll pr-2 custom-scrollbar">
+              <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+                {conferences.map((conf, index) => (
+                  <div
+                    key={index}
+                    className="bg-gray-500/5 hover:bg-gray-500/10 border border-gray-800 rounded-lg px-5 py-4 hover:border-[var(--primary-color)] transition-all duration-500 cursor-pointer"
+                  >
+                    <h3 className="text-[color:var(--primary-color)] font-semibold my-2">
+                      {conf.date}
+                    </h3>
+                    <h4 className="text-lg font-normal font-unbounded mb-1">
+                      {conf.title}
+                    </h4>
+                    <div className="text-gray-400 flex items-center gap-2 text-sm mt-2">
+                      <div className="flex items-center">
+                        <span className="text-[color:var(--primary-color)] text-2xl pe-2">
+                          •
+                        </span>{" "}
+                        {conf.vanue}
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-[color:var(--primary-color)] text-2xl pe-2">
+                          •
+                        </span>{" "}
+                        {conf.citations}
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-4 mt-2">
+                      {conf.tags.map((tag, index) => (
+                        <span
+                          key={index}
+                          className="bg-gray-500/10 text-gray-500 rounded-full py-1 px-1.75 text-[12px]"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>

@@ -1,46 +1,33 @@
-// "use client";
+"use client";
 
-import Image from "next/image";
-import cloud from "@/public/cloud-service.png";
-import iot from "@/public/Internet-icon.svg.png";
-import computing from "@/public/machine-learning.png";
-import security from "@/public/lock.png";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
+import { LoginContext } from "@/context/login";
 
-// Services Data
+export default function Services() {
+  const [researchAreas, setResearchAreas] = useState([]);
+  const [isNewResearchFormOpen, setNewResearchFormOpen] = useState(false);
+  const { isLoggedIn } = useContext(LoginContext);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch("http://localhost:5000/research-areas");
+      const data = await response.json();
+      setResearchAreas(data);
+    };
+    fetchData();
+  }, []);
 
-// const ServicesData = [
-//   {
-//     id: "01",
-//     title: "Cloud Computing",
-//     disc: "Resource allocation, energy optimization, QoS-aware scheduling, and virtualization in distributed computing environments.",
-//     icon: cloud,
-//   },
-//   {
-//     id: "02",
-//     title: "Internet of Things",
-//     disc: "IoT security, edge computing, healthcare applications, consumer electronics, and industrial IoT systems.",
-//     icon: iot,
-//   },
-//   {
-//     id: "03",
-//     title: "Information Security",
-//     disc: "Network intrusion detection, adversarial machine learning, blockchain security, and privacy preservation techniques.",
-//     icon: security,
-//   },
-//   {
-//     id: "04",
-//     title: "Soft Computing",
-//     disc: "Machine learning, optimization algorithms, fuzzy logic, neural networks, and AI-driven solutions for complex problems.",
-//     icon: computing,
-//   },
-// ];
-
-export default async function Services() {
-  const response = await fetch("http://localhost:5000/research-areas");
-  const researchAreas = await response.json();
   return (
     <section className="px-[8%] lg:px-[16%] py-15 text-white">
+      <div className="flex justify-end mb-4">
+        {isLoggedIn && (
+          <button
+            onClick={() => setNewResearchFormOpen(true)}
+            className="border rounded-lg py-1 px-2.5 cursor-pointer"
+          >
+            add new
+          </button>
+        )}
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         {researchAreas.map((research, index) => (
           <div
@@ -52,11 +39,10 @@ export default async function Services() {
                 {index + 1}
               </h3>
               <div>
-                {/* <i className="bi bi-cloud text-3xl"></i> */}
                 <img
                   src={`http://localhost:5000/research-icons/${research.icon}`}
                   alt="cloud icon"
-                  className="h-14 w-auto invert"
+                  className="h-14 w-auto"
                 />
               </div>
             </div>
@@ -64,10 +50,101 @@ export default async function Services() {
               {research.name}
             </h2>
             <p className="text-gray-400 text-lg">{research.description}</p>
-            <div className="border-t border-gray-700 group-hover:border-[var(--primary-color)] mt-5 duration-300"></div>
+            <div className="flex justify-end">
+              {isLoggedIn && (
+                <button
+                  onClick={async () => {
+                    const response = await fetch(
+                      `http://localhost:5000/research-areas/${research._id}`,
+                      { method: "DELETE" }
+                    );
+                    if (response.ok)
+                      setResearchAreas((prev) =>
+                        prev.filter((item) => item._id !== research._id)
+                      );
+                  }}
+                  className="border rounded-lg py-1 px-2.5 cursor-pointer"
+                >
+                  delete
+                </button>
+              )}
+            </div>
           </div>
         ))}
       </div>
+      {isNewResearchFormOpen && (
+        <NewResearchForm
+          setResearchAreas={setResearchAreas}
+          closeNewResearchForm={() => setNewResearchFormOpen(false)}
+          class="w-lg fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+        />
+      )}
     </section>
+  );
+}
+
+function NewResearchForm(props) {
+  const inputNameRef = useRef(null);
+  const inputDescriptionRef = useRef(null);
+  const inputIconRef = useRef(null);
+  return (
+    <div className={`bg-black p-8 rounded-xl shadow-lg ${props.class}`}>
+      <h2 className="text-2xl text-center font-unbounded font-normal text-[color:var(--primary-color)] mb-4">
+        Create New Research Area
+      </h2>
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault()
+          const formData = new FormData();
+          formData.append("name", inputNameRef.current.value);
+          formData.append("description", inputDescriptionRef.current.value);
+          formData.append("icon", inputIconRef.current.files[0]);
+          const response = await fetch("http://localhost:5000/research-areas", {
+            method: "POST",
+            body: formData,
+          });
+        }}
+        className={`space-y-6`}
+      >
+        <div className="">
+          <input
+            ref={inputNameRef}
+            type="text"
+            placeholder="Name"
+            className="w-full bg-[#0e0f12] border border-gray-700 rounded-lg px-4 py-4 text-sm focus:outline-none focus:border-[var(--primary-color)] transition-all duration-500"
+          />
+        </div>
+        <div className="">
+          <input
+            ref={inputDescriptionRef}
+            type="text"
+            placeholder="description"
+            className="w-full bg-[#0e0f12] border border-gray-700 rounded-lg px-4 py-4 text-sm focus:outline-none focus:border-[var(--primary-color)] transition-all duration-500"
+          />
+        </div>
+        <div className="">
+          <input
+            ref={inputIconRef}
+            type="file"
+            accept=".jpg,.png,.jpeg"
+            className="w-full bg-[#0e0f12] border border-gray-700 rounded-lg px-4 py-4 text-sm focus:outline-none focus:border-[var(--primary-color)] transition-all duration-500"
+          />
+        </div>
+        <div className="flex justify-between">
+          <button
+            type="submit"
+            className="bg-[var(--primary-color)] hover:bg-white text-white hover:text-black px-6 py-3 rounded-lg font-semibold transition-all duration-500 cursor-pointer"
+          >
+            Create
+          </button>
+          <button
+            onClick={props.closeNewResearchForm}
+            className="bg-[var(--primary-color)] hover:bg-white text-white hover:text-black px-6 py-3 rounded-lg font-semibold transition-all duration-500 cursor-pointer"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }

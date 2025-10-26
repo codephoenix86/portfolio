@@ -3,11 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import Hero from "@/public/Hero.jpeg";
 import { CountUp } from "countup.js";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
+import { LoginPopupContext } from "@/context/loginPopup";
+import profile from "@/profile.json";
 
 export default function Header() {
-  // statsData
-  const [loginPopup, setLoginPopup] = useState(false);
+  const [isEditing, setEditing] = useState(false);
+  const [role, setRole] = useState("");
+  // const { isLoginPopupOpened, setLoginPopupOpened } =
+  //   useContext(LoginPopupContext);
   const statsData = [
     { value: 606, label: "Citations" },
     { value: 15, label: "H-Index" },
@@ -32,47 +36,47 @@ export default function Header() {
   return (
     <header className="text-white py-12 relative">
       {/* BG elements */}
-      {loginPopup && <div className="absolute inset-0 bg-black/50"></div>}
       <div className="absolute top-0 left-0 w-[300px] h-[300px] rounded-full bg-gradient-to-r from-[var(--primary-light-1)] to-[var(--primary-light-2)] blur-[100px] -z-10"></div>
       <div className="absolute top-0 right-0 w-[700px] h-full rounded-full bg-gradient-to-r from-[var(--primary-light-1)] to-[var(--primary-light-2)] blur-[100px] -z-10"></div>
       <div className="absolute bottom-0 left-[20%] w-[500px] h-full rounded-full bg-gradient-to-r from-[var(--primary-light-1)] to-[var(--primary-light-2)] blur-[100px] -z-10"></div>
       <div className="flex flex-col lg:flex-row justify-between px-[8%] lg:px-[16%]">
         {/* Left Content */}
         <div className="lg:w-1/2 text-start md:text-left">
-          <p className="text-lg mb-2 text-gray-400">
-            Assistant Professor, IIIT Sonepat
-          </p>
+          <p className="text-lg mb-2 text-gray-400">{profile.role}</p>
+          {/* <input
+            type="text"
+            value="Assistant Professor, IIIT Sonepat"
+            className="w-full text-lg mb-2 text-gray-400"
+          /> */}
           <h1 className="text-5xl text-start lg:text-5xl font-unbounded font-normal mb-2">
             {/* Hello I'm{" "} */}
             <span className="text-[color:var(--primary-color)]">
-              Dr. Jitendra Kumar Samriya
+              {profile.name}
             </span>
           </h1>
           <p className="text-gray-400 text-md lg:text-md font-normal font-sora my-8">
-            I am passionate about advancing research and innovation in computer
-            science, with expertise in modern technologies and data-driven
-            solutions.
+            {profile.bio}
           </p>
           {/* Buttons */}
-          <div className="flex flex-wrap gap-8 items-center">
-            <Link
-              href="#"
-              className="border border-[var(--primary-color)] font-bold text-[var(--primary-color)] px-6 py-3 rounded hover:bg-[var(--primary-color)] hover:text-white transition-all duration-500"
-            >
-              <i className="bi bi-download me-2"></i> Download CV
-            </Link>
-            <div className="flex hero-social gap-2 text-xl">
-              <i className="bi bi-github"></i>
-              <i className="bi bi-linkedin"></i>
-              <i className="bi bi-youtube"></i>
-              <i className="bi bi-twitter"></i>
+          <div className="grid grid-cols-3 gap-2 items-center">
+            <div className="flex hero-social gap-2 text-md items-center cursor-pointer">
+              <i className="bi bi-mortarboard"></i>
+              <span>google scholar</span>
+            </div>
+            <div className="flex hero-social gap-2 text-md items-center cursor-pointer">
+              <i className="bi bi-journal-text"></i>
+              <span>research gate</span>
+            </div>
+            <div className="flex hero-social gap-2 text-md items-center cursor-pointer">
+              <i className="bi bi-building"></i>
+              <span>IIIT Sonepat</span>
             </div>
           </div>
         </div>
         {/* Right Image */}
         <div className="lg:w-1/2 w-full mt-10 lg:mt-0 flex justify-center relative">
           <div className="relative rounded-full flex items-center justify-center">
-            <div className="relative hero-image w-full h-full rounded-full overflow-hidden bg-gradient-to-b from-[var(--hero-image-from)] to-[var(--hero-image-to)]">
+            <div className="relative hero-image w-full h-full rounded-full overflow-hidden bg-gradient-to-b from-[var(--hero-image-from)] to-[var(--hero-image-to)] transform hover:scale-105 duration-300">
               <Image
                 src={Hero}
                 alt="Portfolio Picture"
@@ -98,14 +102,13 @@ export default function Header() {
           </div>
         ))}
       </div>
-      {loginPopup && (
-        <Login class="w-lg fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-      )}
     </header>
   );
 }
 
 function Login(props) {
+  const { isLoginPopupOpened, setLoginPopupOpened } =
+    useContext(LoginPopupContext);
   return (
     <div className={`bg-black p-8 rounded-xl shadow-lg ${props.class}`}>
       <h2 className="text-2xl text-center font-unbounded font-normal text-[color:var(--primary-color)] mb-4">
@@ -126,12 +129,21 @@ function Login(props) {
             className="w-full bg-[#0e0f12] border border-gray-700 rounded-lg px-4 py-4 text-sm focus:outline-none focus:border-[var(--primary-color)] transition-all duration-500"
           />
         </div>
-        <button
-          type="submit"
-          className="bg-[var(--primary-color)] hover:bg-white text-white hover:text-black px-6 py-3 rounded-lg font-semibold transition-all duration-500 cursor-pointer"
-        >
-          Log In
-        </button>
+        <div className="flex justify-between">
+          <button
+            type="submit"
+            className="bg-[var(--primary-color)] hover:bg-white text-white hover:text-black px-6 py-3 rounded-lg font-semibold transition-all duration-500 cursor-pointer"
+          >
+            Log In
+          </button>
+          <button
+            type="submit"
+            onClick={() => setLoginPopupOpened(false)}
+            className="bg-[var(--primary-color)] hover:bg-white text-white hover:text-black px-6 py-3 rounded-lg font-semibold transition-all duration-500 cursor-pointer"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );

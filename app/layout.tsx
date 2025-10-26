@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Sora, Unbounded } from "next/font/google";
 import "./globals.css";
 import Nav from "./Nav";
-// import { createContext } from "react";
+import { LoginPopupProvider } from "@/context/loginPopup";
+import { LoginProvider } from "@/context/login";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,13 +36,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${sora.variable} ${unbounded.variable}`}
-      >
-        <Nav />
-        {children}
-      </body>
-    </html>
+    <LoginProvider>
+      <LoginPopupProvider>
+        <html lang="en">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} ${sora.variable} ${unbounded.variable}`}
+          >
+            <Nav />
+            {children}
+          </body>
+        </html>
+      </LoginPopupProvider>
+    </LoginProvider>
   );
 }

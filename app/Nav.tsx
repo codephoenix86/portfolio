@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { LoginPopupContext } from "@/context/loginPopup";
+import { LoginContext } from "@/context/login";
 
 export default function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { setLoginPopupOpened } = useContext(LoginPopupContext);
+  const { isLoggedIn, setLoggedIn } = useContext(LoginContext);
   const pathname = usePathname();
   const navLinks = [
     { name: "Home", href: "/" },
@@ -17,15 +21,6 @@ export default function Nav() {
   return (
     <nav className="w-full z-[99999] transition-all duration-300">
       <div className="flex justify-end items-center px-[8%] lg:px-[16%] py-6">
-        {/* <Link
-          href="/"
-          className="text-5xl font-bold font-unbounded text-white logo"
-        >
-          Folio
-          <span className="text-[var(--primary-color)] font-unbounded">
-            Hub.
-          </span>
-        </Link> */}
         <div className="flex items-center gap-3">
           <div className="hidden lg:flex nav-menu items-center space-x-5">
             {navLinks.map((link) => (
@@ -42,12 +37,15 @@ export default function Nav() {
               </Link>
             ))}
           </div>
-          <Link
-            href="/Contact"
+          <div
+            onClick={() => {
+              if (isLoggedIn) setLoggedIn(false);
+              else setLoginPopupOpened(true);
+            }}
             className="bg-[var(--primary-color)] px-5 py-2 text-lg text-white font-semibold cursor-pointer rounded-lg transition-all duration-300 hover:bg-transparent shadow-md hover:shadow-[0px_2px_5px_var(--primary-color)]"
           >
-            Admin
-          </Link>
+            {isLoggedIn ? "Log Out" : "Admin"}
+          </div>
         </div>
         {/* {Mobile menu Button} */}
         <button

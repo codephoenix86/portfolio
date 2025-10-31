@@ -11,6 +11,7 @@ export default function Nav() {
   const { setLoginPopupOpened } = useContext(LoginPopupContext);
   const { isLoggedIn, setLoggedIn } = useContext(LoginContext);
   const pathname = usePathname();
+  const [isWorkMenuOpen, setWorkMenuOpen] = useState(false);
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Research", href: "/Services" },
@@ -24,17 +25,29 @@ export default function Nav() {
         <div className="flex items-center gap-3">
           <div className="hidden lg:flex nav-menu items-center space-x-5">
             {navLinks.map((link) => (
-              <Link
+              <div
                 key={link.name}
-                href={link.href}
-                className={`text-base font-bold transition-all text-white relative px-2 py-2 rounded hover:text-[var(--primary-color)] ${
-                  pathname === link.href
-                    ? "active-links text-[--primary-color]"
-                    : " "
-                }`}
+                onMouseEnter={() => {
+                  console.log(link.name);
+                  if (link.name === "Work") setWorkMenuOpen(true);
+                }}
+                onMouseLeave={() => {
+                  if (link.name === "Work") setWorkMenuOpen(false);
+                }}
+                className="relative"
               >
-                {link.name}
-              </Link>
+                <Link
+                  href={link.href}
+                  className={`nav-link text-base font-bold transition-all text-white relative px-2 py-2 rounded hover:text-[var(--primary-color)] ${
+                    pathname === link.href
+                      ? "active-links text-[--primary-color]"
+                      : " "
+                  }`}
+                >
+                  {link.name}
+                </Link>
+                {link.name === "Work" && <WorkMenu open={isWorkMenuOpen} />}
+              </div>
             ))}
           </div>
           <div
@@ -76,5 +89,19 @@ export default function Nav() {
         </ul>
       </div>
     </nav>
+  );
+}
+
+function WorkMenu(props) {
+  return (
+    <div
+      className={`bg-gray-900 border-gray-700 rounded-lg shadow-lg p-3 min-w-[200px] z-50 mt-4 absolute flex flex-col ease-in-out border transition-all duration-300 ${
+        props.open ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      <Link href="/Publications">Publications</Link>
+      <Link href="/Conferences">Conferences</Link>
+      <Link href="/Books">Books</Link>
+    </div>
   );
 }

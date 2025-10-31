@@ -2,22 +2,11 @@
 
 import { useEffect, useState, useRef, useContext } from "react";
 import { FaBootstrap, FaJs, FaNodeJs, FaReact } from "react-icons/fa";
-import { SiCss3, SiHtml5, SiNextdotjs, SiTailwindcss } from "react-icons/si";
 import { LoginContext } from "@/context/login";
 
 export default function Resume() {
   const [activeTab, setActiveTab] = useState("Publications");
   const tabs = ["Publications", "Conferences", "Books", "Timeline"];
-  const skills = [
-    { name: "HTML", icon: <SiHtml5 /> },
-    { name: "CSS", icon: <SiCss3 /> },
-    { name: "JavaScipt", icon: <FaJs /> },
-    { name: "React", icon: <FaReact /> },
-    { name: "Bootstrap", icon: <FaBootstrap /> },
-    { name: "Next.js", icon: <SiNextdotjs /> },
-    { name: "Tailwind CSS", icon: <SiTailwindcss /> },
-    { name: "Node.js", icon: <FaNodeJs /> },
-  ];
   return (
     <section className="px-[8%] lg:px-[16%] py-20 text-white">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-12">

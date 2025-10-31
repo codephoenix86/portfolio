@@ -72,18 +72,18 @@ export default function Profile(props) {
         </textarea>
         {/* Buttons */}
         <div className="profile-links grid grid-cols-3 gap-2 items-center">
-          <div className="flex hero-social gap-2 text-md items-center cursor-pointer">
+          <a href="https://scholar.google.com/citations?user=4zbw62wAAAAJ&hl=en" className="flex hero-social gap-2 text-md items-center cursor-pointer">
             <i className="bi bi-link-45deg text-lg"></i>
             <span>google scholar</span>
-          </div>
-          <div className="flex hero-social gap-2 text-md items-center cursor-pointer">
+          </a>
+          <a href="https://www.researchgate.net/profile/Jitendra-Samriya" className="flex hero-social gap-2 text-md items-center cursor-pointer">
             <i className="bi bi-link-45deg text-lg"></i>
             <span>research gate</span>
-          </div>
-          <div className="flex hero-social gap-2 text-md items-center cursor-pointer">
+          </a>
+          <a href="https://iiitsonepat.ac.in/" className="flex hero-social gap-2 text-md items-center cursor-pointer">
             <i className="bi bi-link-45deg text-lg"></i>
             <span>IIIT Sonepat</span>
-          </div>
+          </a>
         </div>
       </div>
       {/* Right Image */}

@@ -1,20 +1,21 @@
 "use client";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { LoginContext } from "@/context/login";
 import { useContext, useEffect, useRef, useState } from "react";
 export default function Publications(props) {
   const [publications, setPublications] = useState(props.data);
+  useEffect(() => {
+    AOS.init({
+      duration: 600, // animation duration
+      once: true, // run only once per element
+      easing: "ease-in-out",
+    });
+  }, [publications]);
   const { isLoggedIn } = useContext(LoginContext);
   const [isNewPublicationFormOpen, setNewPublicationForm] = useState(false);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const response = await fetch("http://localhost:5000/publications");
-  //     const data = await response.json();
-  //     setPublications(data);
-  //   };
-  //   fetchData();
-  // }, []);
   return (
-    <div className="h-[500px] overflow-y-scroll pr-2 custom-scrollbar">
+    <div className="h-[500px] pr-2">
       <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
         {isLoggedIn && (
           <div className="flex justify-end">
@@ -27,58 +28,57 @@ export default function Publications(props) {
           </div>
         )}
         {publications.map((pub, index) => (
-          <div
-            key={index}
-            className="bg-gray-500/5 hover:bg-gray-500/10 border border-gray-800 rounded-lg px-5 py-4 hover:border-[var(--primary-color)] transition-all duration-500 cursor-pointer"
-          >
-            <div className="flex justify-between items-center">
-              <h3 className="text-[color:var(--primary-color)] font-semibold my-2">
-                {pub.year}
-              </h3>
-              {isLoggedIn && (
-                <button
-                  onClick={async () => {
-                    const response = await fetch(
-                      `http://localhost:5000/publications/${pub._id}`,
-                      { method: "DELETE" }
-                    );
-                    if (response.ok)
-                      setPublications((prev) =>
-                        prev.filter((item) => item._id !== pub._id)
+          <div data-aos="fade-up" key={index}>
+            <div className="bg-gray-500/5 transition-all duration-500 ease-out hover:shadow-[0_0_15px_#fc4100] hover:scale-[1.01] hover:bg-gray-500/10 border border-gray-800 rounded-lg px-5 py-4 hover:border-[var(--primary-color)] cursor-pointer">
+              <div className="flex justify-between items-center">
+                <h3 className="text-[color:var(--primary-color)] font-semibold my-2">
+                  {pub.year}
+                </h3>
+                {isLoggedIn && (
+                  <button
+                    onClick={async () => {
+                      const response = await fetch(
+                        `http://localhost:5000/publications/${pub._id}`,
+                        { method: "DELETE" }
                       );
-                  }}
-                  className="border px-2.5 py-1 rounded-xl cursor-pointer"
-                >
-                  delete
-                </button>
-              )}
-            </div>
-            <h4 className="text-xl font-normal font-unbounded mb-1">
-              {pub.title}
-            </h4>
-            <div className="text-gray-400 flex items-center gap-2 text-sm mt-2">
-              <div className="flex items-center">
-                <span className="text-[color:var(--primary-color)] text-2xl pe-2">
-                  •
-                </span>{" "}
-                {pub.vanue}
+                      if (response.ok)
+                        setPublications((prev) =>
+                          prev.filter((item) => item._id !== pub._id)
+                        );
+                    }}
+                    className="border px-2.5 py-1 rounded-xl cursor-pointer"
+                  >
+                    delete
+                  </button>
+                )}
               </div>
-              <div className="flex items-center">
-                <span className="text-[color:var(--primary-color)] text-2xl pe-2">
-                  •
-                </span>{" "}
-                {pub.citations} Citations
+              <h4 className="text-xl font-normal font-unbounded mb-1">
+                {pub.title}
+              </h4>
+              <div className="text-gray-400 flex items-center gap-2 text-sm mt-2">
+                <div className="flex items-center">
+                  <span className="text-[color:var(--primary-color)] text-2xl pe-2">
+                    •
+                  </span>{" "}
+                  {pub.vanue}
+                </div>
+                <div className="flex items-center">
+                  <span className="text-[color:var(--primary-color)] text-2xl pe-2">
+                    •
+                  </span>{" "}
+                  {pub.citations} Citations
+                </div>
               </div>
-            </div>
-            <div className="flex flex-wrap items-center gap-4 mt-2">
-              {pub.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="bg-gray-500/10 text-gray-500 rounded-full py-1 px-1.75 text-[12px]"
-                >
-                  {tag}
-                </span>
-              ))}
+              <div className="flex flex-wrap items-center gap-4 mt-2">
+                {pub.tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="bg-gray-500/10 text-gray-500 rounded-full py-1 px-1.75 text-[12px]"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         ))}

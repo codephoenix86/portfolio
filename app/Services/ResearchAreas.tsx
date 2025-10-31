@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState, useContext } from "react";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { LoginContext } from "@/context/login";
 
 export default function ResearchAreas(props) {
@@ -11,8 +11,8 @@ export default function ResearchAreas(props) {
   useEffect(() => {
     AOS.init({
       duration: 600, // animation duration
-      once: true,    // run only once per element
-      easing: 'ease-in-out',
+      once: true, // run only once per element
+      easing: "ease-in-out",
     });
   }, [researchAreas]);
   // useEffect(() => {
@@ -38,45 +38,43 @@ export default function ResearchAreas(props) {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         {researchAreas.map((research, index) => (
-          <div
-            data-aos="fade-up"
-            key={index}
-            className="service-card shadow-[0_0_0px_transparent] hover:shadow-[0_0_15px_#fc4100] group py-15 px-10 border border-gray-800 rounded-xl transition-all duration-500 cursor-pointer hover:border-[--primary-color]"
-          >
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-4xl stroke-text font-bold text-gray-400 transition-colors duration-300 group-hover:text-[--primary-color]">
-                {index + 1}
-              </h3>
-              <div>
-                <img
-                  src={`http://localhost:5000/research-icons/${research.icon}`}
-                  alt="cloud icon"
-                  className="h-14 w-auto"
-                />
+          <div data-aos="fade-up" key={index}>
+            <div className="service-card scale-102 hover:shadow-[0_0_15px_#fc4100] group py-15 px-10 border border-gray-800 rounded-xl transition-all duration-500 cursor-pointer hover:border-[--primary-color]">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-4xl stroke-text font-bold text-gray-400 transition-colors duration-300 group-hover:text-[--primary-color]">
+                  {index + 1}
+                </h3>
+                <div>
+                  <img
+                    src={`http://localhost:5000/research-icons/${research.icon}`}
+                    alt="cloud icon"
+                    className="h-14 w-auto"
+                  />
+                </div>
               </div>
-            </div>
-            <h2 className="text-3xl font-normal font-unbounded mb-5 transition-colors duration-300 group-hover:text-[var(--primary-color)]">
-              {research.name}
-            </h2>
-            <p className="text-gray-400 text-lg">{research.description}</p>
-            <div className="flex justify-end">
-              {isLoggedIn && (
-                <button
-                  onClick={async () => {
-                    const response = await fetch(
-                      `http://localhost:5000/research-areas/${research._id}`,
-                      { method: "DELETE" }
-                    );
-                    if (response.ok)
-                      setResearchAreas((prev) =>
-                        prev.filter((item) => item._id !== research._id)
+              <h2 className="text-3xl font-normal font-unbounded mb-5 transition-colors duration-300 group-hover:text-[var(--primary-color)]">
+                {research.name}
+              </h2>
+              <p className="text-gray-400 text-lg">{research.description}</p>
+              <div className="flex justify-end">
+                {isLoggedIn && (
+                  <button
+                    onClick={async () => {
+                      const response = await fetch(
+                        `http://localhost:5000/research-areas/${research._id}`,
+                        { method: "DELETE" }
                       );
-                  }}
-                  className="border rounded-lg py-1 px-2.5 cursor-pointer"
-                >
-                  delete
-                </button>
-              )}
+                      if (response.ok)
+                        setResearchAreas((prev) =>
+                          prev.filter((item) => item._id !== research._id)
+                        );
+                    }}
+                    className="border rounded-lg py-1 px-2.5 cursor-pointer"
+                  >
+                    delete
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         ))}

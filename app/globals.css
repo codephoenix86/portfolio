@@ -168,27 +168,27 @@ body {
 
 .profile-image {
   opacity: 0;
-  animation: shower 1s 0.8s forwards linear;
+  animation: shower 1s 0s forwards linear;
 }
 
 .profile-role {
   opacity: 0;
-  animation: Anim-bottom var(--transition-regular) 1.4s forwards linear;
+  animation: Anim-bottom var(--transition-regular) 0.8s forwards linear;
 }
 
 .profile-name {
   opacity: 0;
-  animation: Anim-bottom var(--transition-regular) 1.2s forwards linear;
+  animation: Anim-bottom var(--transition-regular) 0.6s forwards linear;
 }
 
 .profile-bio {
   opacity: 0;
-  animation: Anim-bottom var(--transition-regular) 1s forwards linear;
+  animation: Anim-bottom var(--transition-regular) 0.4s forwards linear;
 }
 
 .profile-links {
   opacity: 0;
-  animation: Anim-bottom var(--transition-regular) 0.8s forwards linear;
+  animation: Anim-bottom var(--transition-regular) 0.2s forwards linear;
 }
 
 .work-content h2 {

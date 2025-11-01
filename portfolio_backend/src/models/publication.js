@@ -5,5 +5,6 @@ const schema = new mongoose.Schema({
   vanue: { type: String, required: true },
   citations: Number,
   tags: [String],
+  link: String,
 });
 module.exports = mongoose.model("Publication", schema);

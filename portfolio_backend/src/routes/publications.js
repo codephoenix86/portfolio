@@ -6,13 +6,14 @@ router.get("/", async (req, res) => {
   res.status(200).json(data);
 });
 router.post("/", async (req, res) => {
-  const { year, title, vanue, tags, citations } = req.body;
+  const { year, title, vanue, tags, citations, link } = req.body;
   const data = await Publication.create({
     year,
     title,
     vanue,
     tags,
     citations,
+    link,
   });
   res.status(200).json(data);
 });

@@ -6,8 +6,15 @@ router.get("/", async (req, res) => {
   res.status(200).json(data);
 });
 router.post("/", async (req, res) => {
-  const { title, year, vanue, name, tags } = req.body;
-  const data = await Conference.create({ title, year, vanue, name, tags });
+  const { title, year, vanue, name, tags, link } = req.body;
+  const data = await Conference.create({
+    title,
+    year,
+    vanue,
+    name,
+    tags,
+    link,
+  });
   res.status(200).json(data);
 });
 router.delete("/:id", async (req, res) => {

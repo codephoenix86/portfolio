@@ -4,5 +4,6 @@ const schema = new mongoose.Schema({
   publisher: String,
   year: Number,
   ISBN: String,
+  link: String,
 });
 module.exports = mongoose.model("Book", schema);

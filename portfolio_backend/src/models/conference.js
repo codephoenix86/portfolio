@@ -5,5 +5,6 @@ const schema = new mongoose.Schema({
   name: String,
   vanue: String,
   tags: [String],
+  link: String,
 });
 module.exports = mongoose.model("Conference", schema);

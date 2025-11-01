@@ -6,8 +6,8 @@ router.get("/", async (req, res) => {
   res.status(200).json(data);
 });
 router.post("/", async (req, res) => {
-  const { title, publisher, ISBN, year } = req.body;
-  const data = await Book.create({ title, publisher, ISBN, year });
+  const { title, publisher, ISBN, year, link } = req.body;
+  const data = await Book.create({ title, publisher, ISBN, year, link });
   res.status(200).json(data);
 });
 router.delete("/:id", async (req, res) => {

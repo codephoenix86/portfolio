@@ -37,7 +37,7 @@ export default function Profile(props) {
   const [bio, setBio] = useState(props.profile.bio);
   const { isLoggedIn } = useContext(LoginContext);
   return (
-    <div className="flex flex-col lg:flex-row justify-between px-[8%] lg:px-[16%]">
+    <div className="flex flex-col gap-6 lg:flex-row justify-between px-[8%] lg:px-[16%]">
       {/* Left Content */}
       <div className="lg:w-1/2 text-start md:text-left">
         {/* <p className="text-lg mb-2 text-gray-400">{profile.role}</p> */}

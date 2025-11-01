@@ -167,27 +167,184 @@
 //   );
 // }
 
-
 "use client";
 import { useEffect, useRef, useState, useContext } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { LoginContext } from "@/context/login";
 
+// export default function ResearchAreas(props) {
+//   const [researchAreas, setResearchAreas] = useState(props.researchAreas);
+//   const [isNewResearchFormOpen, setNewResearchFormOpen] = useState(false);
+//   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+//   const [areaToDelete, setAreaToDelete] = useState(null);
+//   const { isLoggedIn } = useContext(LoginContext);
+
+//   useEffect(() => {
+//     AOS.init({
+//       duration: 600,
+//       once: true,
+//       easing: "ease-in-out",
+//     });
+//   }, [researchAreas]);
+
+//   const handleDeleteArea = async () => {
+//     const response = await fetch(
+//       `http://localhost:5000/research-areas/${areaToDelete._id}`,
+//       { method: "DELETE" }
+//     );
+//     if (response.ok) {
+//       setResearchAreas((prev) =>
+//         prev.filter((item) => item._id !== areaToDelete._id)
+//       );
+//       setDeleteModalOpen(false);
+//       setAreaToDelete(null);
+//     }
+//   };
+
+//   return (
+//     <section className="px-[8%] lg:px-[16%] py-15 text-white">
+//       {/* Header Section with Add Button */}
+//       <div className="flex justify-between items-center mb-8">
+//         <div>
+//           <h2 className="text-3xl font-bold text-white font-unbounded mb-2">
+//             Research Areas
+//           </h2>
+//           <p className="text-gray-400">
+//             Explore our cutting-edge research domains
+//           </p>
+//         </div>
+//         {isLoggedIn && (
+//           <button
+//             onClick={() => setNewResearchFormOpen(true)}
+//             className="flex items-center gap-2 bg-[var(--primary-color)] hover:bg-white text-white hover:text-black px-5 py-2.5 rounded-lg font-semibold transition-all duration-300 shadow-[0_4px_15px_rgba(var(--primary-color-rgb),0.3)] hover:shadow-[0_6px_20px_rgba(255,255,255,0.4)] hover:scale-[1.02] active:scale-[0.98]"
+//           >
+//             <i className="ri-add-line text-xl"></i>
+//             <span>Add New Area</span>
+//           </button>
+//         )}
+//       </div>
+
+//       {/* Research Areas Grid */}
+//       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+//         {researchAreas.map((research, index) => (
+//           <div data-aos="fade-up" key={index}>
+//             <div className="service-card h-full hover:scale-101 hover:shadow-[0_0_15px_#fc4100] group py-15 px-10 border border-gray-800 rounded-xl transition-all duration-300 cursor-pointer hover:border-[--primary-color] relative">
+//               {/* Delete Button - Top Right Corner */}
+//               {isLoggedIn && (
+//                 <button
+//                   onClick={() => {
+//                     setAreaToDelete(research);
+//                     setDeleteModalOpen(true);
+//                   }}
+//                   className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-2 rounded-lg border border-red-500/30 hover:border-red-500"
+//                   title="Delete research area"
+//                 >
+//                   <i className="ri-delete-bin-line text-lg"></i>
+//                 </button>
+//               )}
+
+//               <div className="flex justify-between items-center mb-4">
+//                 <h3 className="text-4xl stroke-text font-bold text-gray-400 transition-colors duration-300 group-hover:text-[--primary-color]">
+//                   {index + 1}
+//                 </h3>
+//                 <div>
+//                   <img
+//                     src={`http://localhost:5000/research-icons/${research.icon}`}
+//                     alt="research icon"
+//                     className="h-14 w-auto"
+//                   />
+//                 </div>
+//               </div>
+//               <h2 className="text-2xl font-normal font-unbounded mb-5 transition-colors duration-300 group-hover:text-[var(--primary-color)]">
+//                 {research.name}
+//               </h2>
+//               <p className="text-gray-400 text-md">{research.description}</p>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+
+//       {/* Add New Research Form Modal */}
+//       {isNewResearchFormOpen && (
+//         <>
+//           <div
+//             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+//             onClick={() => setNewResearchFormOpen(false)}
+//           ></div>
+//           <NewResearchForm
+//             setResearchAreas={setResearchAreas}
+//             closeNewResearchForm={() => setNewResearchFormOpen(false)}
+//             class="w-full max-w-lg fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100000]"
+//           />
+//         </>
+//       )}
+
+//       {/* Delete Confirmation Modal */}
+//       {isDeleteModalOpen && (
+//         <>
+//           <div
+//             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+//             onClick={() => {
+//               setDeleteModalOpen(false);
+//               setAreaToDelete(null);
+//             }}
+//           ></div>
+//           <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-gradient-to-br from-[#1c1b21] to-[#0e0f12] p-8 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.6)] border border-red-500/30 max-w-md w-full mx-4">
+//             <div className="text-center mb-6">
+//               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-500/10 border border-red-500/30 mb-4">
+//                 <i className="ri-alert-line text-3xl text-red-500"></i>
+//               </div>
+//               <h3 className="text-2xl font-bold text-white mb-2">
+//                 Delete Research Area?
+//               </h3>
+//               <p className="text-gray-400">
+//                 Are you sure you want to delete{" "}
+//                 <span className="text-white font-semibold">
+//                   "{areaToDelete?.name}"
+//                 </span>
+//                 ? This action cannot be undone.
+//               </p>
+//             </div>
+//             <div className="flex gap-4">
+//               <button
+//                 onClick={() => {
+//                   setDeleteModalOpen(false);
+//                   setAreaToDelete(null);
+//                 }}
+//                 className="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 border border-gray-700 hover:border-gray-600"
+//               >
+//                 Cancel
+//               </button>
+//               <button
+//                 onClick={handleDeleteArea}
+//                 className="flex-1 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-[0_4px_15px_rgba(239,68,68,0.3)] hover:shadow-[0_6px_20px_rgba(239,68,68,0.4)]"
+//               >
+//                 Delete
+//               </button>
+//             </div>
+//           </div>
+//         </>
+//       )}
+//     </section>
+//   );
+// }
+
 export default function ResearchAreas(props) {
   const [researchAreas, setResearchAreas] = useState(props.researchAreas);
   const [isNewResearchFormOpen, setNewResearchFormOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [areaToDelete, setAreaToDelete] = useState(null);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
   const { isLoggedIn } = useContext(LoginContext);
 
   useEffect(() => {
     AOS.init({
-      duration: 600,
+      duration: 800,
       once: true,
-      easing: "ease-in-out",
+      easing: "ease-out-cubic",
     });
-  }, [researchAreas]);
+  }, []);
 
   const handleDeleteArea = async () => {
     const response = await fetch(
@@ -204,80 +361,199 @@ export default function ResearchAreas(props) {
   };
 
   return (
-    <section className="px-[8%] lg:px-[16%] py-15 text-white">
-      {/* Header Section with Add Button */}
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h2 className="text-3xl font-bold text-white font-unbounded mb-2">
-            Research Areas
-          </h2>
-          <p className="text-gray-400">
-            Explore our cutting-edge research domains
-          </p>
+    <section className="px-[8%] lg:px-[16%] py-20 text-white relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute top-20 right-10 w-72 h-72 bg-[var(--primary-color)]/5 rounded-full blur-3xl animate-pulse" />
+      <div
+        className="absolute bottom-20 left-10 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl animate-pulse"
+        style={{ animationDelay: "1s" }}
+      />
+
+      {/* Header Section */}
+      <div className="relative z-10 mb-16" data-aos="fade-down">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+          <div className="flex-1">
+            <div className="inline-block mb-4">
+              <span className="px-4 py-2 bg-[var(--primary-color)]/10 border border-[var(--primary-color)]/30 rounded-full text-[var(--primary-color)] text-sm font-semibold backdrop-blur-sm">
+                🔬 Our Focus
+              </span>
+            </div>
+            <h2 className="text-5xl font-bold font-unbounded mb-4 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+              Research Areas
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl">
+              Explore our cutting-edge research domains pushing the boundaries
+              of innovation and discovery
+            </p>
+          </div>
+
+          {isLoggedIn && (
+            <button
+              onClick={() => setNewResearchFormOpen(true)}
+              className="group relative px-6 py-3 bg-gradient-to-r from-[var(--primary-color)] to-orange-500 rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:shadow-[0_0_40px_rgba(252,65,0,0.4)] hover:scale-105 active:scale-95"
+            >
+              <span className="relative z-10 flex items-center gap-2">
+                <svg
+                  className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+                Add New Area
+              </span>
+              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
+            </button>
+          )}
         </div>
-        {isLoggedIn && (
-          <button
-            onClick={() => setNewResearchFormOpen(true)}
-            className="flex items-center gap-2 bg-[var(--primary-color)] hover:bg-white text-white hover:text-black px-5 py-2.5 rounded-lg font-semibold transition-all duration-300 shadow-[0_4px_15px_rgba(var(--primary-color-rgb),0.3)] hover:shadow-[0_6px_20px_rgba(255,255,255,0.4)] hover:scale-[1.02] active:scale-[0.98]"
-          >
-            <i className="ri-add-line text-xl"></i>
-            <span>Add New Area</span>
-          </button>
-        )}
       </div>
 
       {/* Research Areas Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
         {researchAreas.map((research, index) => (
-          <div data-aos="fade-up" key={index}>
-            <div className="service-card h-full hover:scale-101 hover:shadow-[0_0_15px_#fc4100] group py-15 px-10 border border-gray-800 rounded-xl transition-all duration-300 cursor-pointer hover:border-[--primary-color] relative">
-              {/* Delete Button - Top Right Corner */}
-              {isLoggedIn && (
-                <button
-                  onClick={() => {
-                    setAreaToDelete(research);
-                    setDeleteModalOpen(true);
-                  }}
-                  className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-2 rounded-lg border border-red-500/30 hover:border-red-500"
-                  title="Delete research area"
-                >
-                  <i className="ri-delete-bin-line text-lg"></i>
-                </button>
-              )}
+          <div
+            data-aos="fade-up"
+            data-aos-delay={index * 100}
+            key={index}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            <div className="group relative h-full bg-gradient-to-br from-gray-900/80 to-gray-800/50 backdrop-blur-sm border border-gray-800/50 rounded-2xl overflow-hidden transition-all duration-500 hover:border-[var(--primary-color)]/50 hover:shadow-[0_0_50px_rgba(252,65,0,0.3)] hover:scale-[1.02]">
+              {/* Animated gradient overlay */}
+              <div
+                className={`absolute inset-0 bg-gradient-to-br from-[var(--primary-color)]/10 via-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+              />
 
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-4xl stroke-text font-bold text-gray-400 transition-colors duration-300 group-hover:text-[--primary-color]">
-                  {index + 1}
-                </h3>
-                <div>
-                  <img
-                    src={`http://localhost:5000/research-icons/${research.icon}`}
-                    alt="research icon"
-                    className="h-14 w-auto"
-                  />
+              {/* Glowing corner accent */}
+              <div className="absolute top-0 right-0 w-40 h-40 bg-[var(--primary-color)]/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              {/* Animated border glow */}
+              <div
+                className={`absolute -inset-[1px] bg-gradient-to-r from-[var(--primary-color)] via-orange-500 to-[var(--primary-color)] rounded-2xl opacity-0 group-hover:opacity-20 blur-sm transition-opacity duration-500`}
+              />
+
+              <div className="relative z-10 p-8">
+                {/* Header with number and icon */}
+                <div className="flex justify-between items-start mb-6">
+                  {/* Number badge */}
+                  <div className="relative">
+                    <div className="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-gray-800 to-gray-900 group-hover:from-[var(--primary-color)]/30 group-hover:to-orange-500/30 transition-all duration-500 select-none">
+                      {String(index + 1).padStart(2, "0")}
+                    </div>
+                    <div className="absolute inset-0 text-7xl font-black text-[var(--primary-color)] opacity-0 group-hover:opacity-20 blur-lg transition-opacity duration-500">
+                      {String(index + 1).padStart(2, "0")}
+                    </div>
+                  </div>
+
+                  {/* Icon container */}
+                  <div className="relative">
+                    <div className="w-16 h-16 rounded-2xl bg-[var(--primary-color)]/10 border border-[var(--primary-color)]/30 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 group-hover:bg-[var(--primary-color)]/20">
+                      <img
+                        src={`http://localhost:5000/research-icons/${research.icon}`}
+                        alt="research icon"
+                        className="h-10 w-auto filter brightness-0 invert group-hover:brightness-100 group-hover:invert-0 transition-all duration-500"
+                      />
+                    </div>
+                    {/* Icon glow effect */}
+                    <div className="absolute inset-0 w-16 h-16 rounded-2xl bg-[var(--primary-color)] opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-500" />
+                  </div>
+
+                  {/* Delete Button */}
+                  {isLoggedIn && (
+                    <button
+                      onClick={() => {
+                        setAreaToDelete(research);
+                        setDeleteModalOpen(true);
+                      }}
+                      className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-2.5 rounded-xl border border-red-500/30 hover:border-red-500 hover:scale-110 z-20"
+                      title="Delete research area"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
+                      </svg>
+                    </button>
+                  )}
                 </div>
+
+                {/* Title */}
+                <h3 className="text-2xl font-unbounded font-bold mb-4 text-white group-hover:text-[var(--primary-color)] transition-colors duration-300">
+                  {research.name}
+                </h3>
+
+                {/* Description */}
+                <p className="text-gray-400 text-base leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
+                  {research.description}
+                </p>
+
+                {/* Animated bottom border */}
+                <div
+                  className={`h-1 mt-6 bg-gradient-to-r from-[var(--primary-color)] to-orange-500 rounded-full transition-all duration-500 ${
+                    hoveredIndex === index ? "w-full" : "w-0"
+                  }`}
+                />
               </div>
-              <h2 className="text-2xl font-normal font-unbounded mb-5 transition-colors duration-300 group-hover:text-[var(--primary-color)]">
-                {research.name}
-              </h2>
-              <p className="text-gray-400 text-md">{research.description}</p>
             </div>
           </div>
         ))}
       </div>
 
+      {/* Empty State */}
+      {researchAreas.length === 0 && (
+        <div className="text-center py-20" data-aos="fade-up">
+          <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gray-800/50 flex items-center justify-center">
+            <svg
+              className="w-16 h-16 text-gray-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+              />
+            </svg>
+          </div>
+          <h3 className="text-2xl font-semibold text-gray-400 mb-2">
+            No research areas yet
+          </h3>
+          <p className="text-gray-500">
+            Start by adding your first research area
+          </p>
+        </div>
+      )}
+
       {/* Add New Research Form Modal */}
       {isNewResearchFormOpen && (
         <>
           <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[100000]"
             onClick={() => setNewResearchFormOpen(false)}
-          ></div>
-          <NewResearchForm
-            setResearchAreas={setResearchAreas}
-            closeNewResearchForm={() => setNewResearchFormOpen(false)}
-            class="w-full max-w-lg fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100000]"
+            style={{ animation: "fadeIn 0.3s ease-out" }}
           />
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100001] w-full max-w-lg px-4">
+            <NewResearchForm
+              setResearchAreas={setResearchAreas}
+              closeNewResearchForm={() => setNewResearchFormOpen(false)}
+            />
+          </div>
         </>
       )}
 
@@ -285,48 +561,96 @@ export default function ResearchAreas(props) {
       {isDeleteModalOpen && (
         <>
           <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[100000]"
             onClick={() => {
               setDeleteModalOpen(false);
               setAreaToDelete(null);
             }}
-          ></div>
-          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-gradient-to-br from-[#1c1b21] to-[#0e0f12] p-8 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.6)] border border-red-500/30 max-w-md w-full mx-4">
-            <div className="text-center mb-6">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-500/10 border border-red-500/30 mb-4">
-                <i className="ri-alert-line text-3xl text-red-500"></i>
+            style={{ animation: "fadeIn 0.3s ease-out" }}
+          />
+          <div
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100001] max-w-md w-full mx-4"
+            style={{ animation: "scaleIn 0.3s ease-out" }}
+          >
+            <div className="bg-gradient-to-br from-gray-900 to-black p-8 rounded-2xl shadow-[0_0_60px_rgba(239,68,68,0.3)] border border-red-500/30 relative overflow-hidden">
+              {/* Animated background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full blur-3xl" />
+
+              <div className="relative z-10">
+                {/* Icon */}
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-500/10 border-2 border-red-500/30 mb-4 animate-pulse">
+                    <svg
+                      className="w-10 h-10 text-red-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold font-unbounded text-white mb-3">
+                    Delete Research Area?
+                  </h3>
+                  <p className="text-gray-400 text-base">
+                    Are you sure you want to delete{" "}
+                    <span className="text-white font-semibold bg-red-500/10 px-2 py-1 rounded">
+                      {areaToDelete?.name}
+                    </span>
+                    ? This action cannot be undone.
+                  </p>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex gap-4">
+                  <button
+                    onClick={() => {
+                      setDeleteModalOpen(false);
+                      setAreaToDelete(null);
+                    }}
+                    className="flex-1 bg-gray-800/50 hover:bg-gray-700 text-gray-300 hover:text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 border border-gray-700 hover:border-gray-600 hover:scale-105 active:scale-95"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleDeleteArea}
+                    className="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-[0_0_30px_rgba(239,68,68,0.3)] hover:shadow-[0_0_40px_rgba(239,68,68,0.5)] hover:scale-105 active:scale-95"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-2">
-                Delete Research Area?
-              </h3>
-              <p className="text-gray-400">
-                Are you sure you want to delete{" "}
-                <span className="text-white font-semibold">
-                  "{areaToDelete?.name}"
-                </span>
-                ? This action cannot be undone.
-              </p>
-            </div>
-            <div className="flex gap-4">
-              <button
-                onClick={() => {
-                  setDeleteModalOpen(false);
-                  setAreaToDelete(null);
-                }}
-                className="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 border border-gray-700 hover:border-gray-600"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleDeleteArea}
-                className="flex-1 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-[0_4px_15px_rgba(239,68,68,0.3)] hover:shadow-[0_6px_20px_rgba(239,68,68,0.4)]"
-              >
-                Delete
-              </button>
             </div>
           </div>
         </>
       )}
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+          }
+        }
+      `}</style>
     </section>
   );
 }

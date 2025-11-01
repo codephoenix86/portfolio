@@ -695,7 +695,7 @@
 // }
 
 "use client";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useMemo } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { LoginContext } from "@/context/login";
@@ -706,6 +706,8 @@ export default function Publications({ data }) {
   const [publications, setPublications] = useState(data);
   const [isNewPublicationFormOpen, setIsNewPublicationFormOpen] =
     useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("default");
   const { isLoggedIn } = useContext(LoginContext);
 
   useEffect(() => {
@@ -715,6 +717,37 @@ export default function Publications({ data }) {
       easing: "ease-out-cubic",
     });
   }, []);
+
+  // Filter and sort publications
+  const filteredAndSortedPublications = useMemo(() => {
+    let filtered = publications.filter((pub) => {
+      const searchLower = searchQuery.toLowerCase();
+      const titleMatch = pub.title.toLowerCase().includes(searchLower);
+      const tagsMatch = pub.tags?.some((tag) =>
+        tag.toLowerCase().includes(searchLower)
+      );
+      const venueMatch = pub.vanue?.toLowerCase().includes(searchLower);
+      return titleMatch || tagsMatch || venueMatch;
+    });
+
+    // Sort publications
+    if (sortBy === "year") {
+      filtered = [...filtered].sort((a, b) => {
+        const yearA = parseInt(a.year) || 0;
+        const yearB = parseInt(b.year) || 0;
+        return yearB - yearA; // Descending order
+      });
+    } else if (sortBy === "citations") {
+      filtered = [...filtered].sort((a, b) => {
+        const citA = a.citations || 0;
+        const citB = b.citations || 0;
+        return citB - citA; // Descending order
+      });
+    }
+    // "default" keeps original order
+
+    return filtered;
+  }, [publications, searchQuery, sortBy]);
 
   const handleDelete = async (id) => {
     try {
@@ -828,12 +861,13 @@ export default function Publications({ data }) {
         </div>
       </div>
 
-      {/* Publications Grid */}
-      {publications.length === 0 ? (
-        <div className="text-center py-20" data-aos="fade-up">
-          <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gray-800/50 flex items-center justify-center">
+      {/* Search and Sort Bar */}
+      <div className="mb-8 flex flex-col sm:flex-row gap-4" data-aos="fade-up">
+        {/* Search Bar */}
+        <div className="flex-1 relative">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
             <svg
-              className="w-16 h-16 text-gray-600"
+              className="w-5 h-5 text-gray-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -842,20 +876,141 @@ export default function Publications({ data }) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
           </div>
+          <input
+            type="text"
+            placeholder="Search by title, venue, or tags..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-12 pr-4 py-3 bg-gradient-to-br from-gray-900/80 to-gray-800/50 border border-gray-800 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-[var(--primary-color)]/50 focus:ring-2 focus:ring-[var(--primary-color)]/20 transition-all duration-300"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery("")}
+              className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-white transition-colors"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          )}
+        </div>
+
+        {/* Sort Dropdown */}
+        <div className="relative group">
+          <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary-color)]/20 to-orange-500/20 rounded-xl opacity-0 group-hover:opacity-100 blur-xl transition-all duration-500" />
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <svg
+                className="w-5 h-5 text-[var(--primary-color)] group-hover:scale-110 transition-transform duration-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"
+                />
+              </svg>
+            </div>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="appearance-none w-full sm:w-auto pl-12 pr-12 py-3 bg-gradient-to-br from-gray-900/80 to-gray-800/50 border border-gray-800 rounded-xl text-white font-medium focus:outline-none focus:border-[var(--primary-color)]/50 focus:ring-2 focus:ring-[var(--primary-color)]/20 hover:border-[var(--primary-color)]/30 hover:shadow-[0_0_20px_rgba(252,65,0,0.2)] transition-all duration-300 cursor-pointer [&>option]:bg-gray-900 [&>option]:text-white [&>option]:py-2 relative z-10"
+            >
+              <option value="default" className="bg-gray-900 text-white">
+                📋 Default Order
+              </option>
+              <option value="year" className="bg-gray-900 text-white">
+                📅 Year (Newest First)
+              </option>
+              <option value="citations" className="bg-gray-900 text-white">
+                ⭐ Most Citations
+              </option>
+            </select>
+            <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none z-10">
+              <svg
+                className="w-5 h-5 text-[var(--primary-color)] group-hover:scale-110 group-hover:rotate-180 transition-all duration-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Results Count */}
+      {searchQuery && (
+        <div className="mb-4 text-gray-400 text-sm" data-aos="fade-up">
+          Found {filteredAndSortedPublications.length} publication
+          {filteredAndSortedPublications.length !== 1 ? "s" : ""}
+        </div>
+      )}
+
+      {/* Publications Grid */}
+      {filteredAndSortedPublications.length === 0 ? (
+        <div className="text-center py-20" data-aos="fade-up">
+          <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gray-800/50 flex items-center justify-center">
+            <svg
+              className="w-16 h-16 text-gray-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              {searchQuery ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              )}
+            </svg>
+          </div>
           <h3 className="text-2xl font-semibold text-gray-400 mb-2">
-            No publications yet
+            {searchQuery
+              ? "No matching publications found"
+              : "No publications yet"}
           </h3>
           <p className="text-gray-500">
-            Start by adding your first publication
+            {searchQuery
+              ? "Try adjusting your search terms"
+              : "Start by adding your first publication"}
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6">
-          {publications.map((pub, index) => (
+          {filteredAndSortedPublications.map((pub, index) => (
             <PublicationCard
               key={pub._id}
               publication={pub}
